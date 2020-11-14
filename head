@@ -12,19 +12,20 @@
 
 
 \setsansfont{Consolas} % 设置英文字体
+\setCJKmainfont{新宋体}% 设置中文字体
 \setmonofont[Mapping={}]{Consolas} % 英文引号之类的正常显示，相当于设置英文字体
 
 \linespread{1.2}
 
 \title{Template For ICPC}
-\author{ChenJr @ GDUT}
+\author{Aether}
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \pagestyle{fancy}
 
-\lhead{\CJKfamily{kai} GuangDong University of Technology} %以下分别为左中右的页眉和页脚
+\lhead{\CJKfamily{kai} Template By Aether} %以下分别为左中右的页眉和页脚
 \chead{}
 
 \rhead{\CJKfamily{kai} 第 \thepage 页}
@@ -77,8 +78,8 @@
 }
 
 \begin{document}
-\title{ICPC Templates For Grooming}
-\author {ChenJr}
+\title{ICPC Templates}
+\author {Aether}
 \maketitle
 \tableofcontents
 \newpage

@@ -1,34 +1,55 @@
-const int INF=0x3f3f3f3f;
-int head[maxn],cnt;
-struct edge{
-    int to,next;
-    long long cost;
-}q[maxn];
-void add_edge(int from,int to,int cost){
-    q[cnt].to=to;
-    q[cnt].cost=cost;
-    q[cnt].next=head[from];
-    head[from]=cnt++;
+#include <bits/stdc++.h>
+
+using namespace std;
+
+inline int input(){
+	int x=0,f=0;char ch=getchar();
+	while(ch<'0'||ch>'9') f|=ch=='-',ch=getchar();
+	while(ch>='0'&&ch<='9') x=x*10+ch-'0',ch=getchar();
+	return f? -x:x;
 }
-typedef pair<int,int>P;
-long long d[maxn];
-int a[maxn],b[maxn],c[maxn];
-void dijikstra(int s){
-    memset(d,INF,sizeof(d));
-    priority_queue<P,vector<P>,greater<P> >que;
-    d[s]=0;
-    que.push(P(0,1));
-    while(!que.empty()){
-        P p=que.top();
-        que.pop();
-        int x=p.second;
-        //if(d[x]<p.first) continue;
-        for(int i=head[x];i!=-1;i=q[i].next){
-            edge id=q[i];
-            if(d[id.to]>d[x]+id.cost){
-                d[id.to]=d[x]+id.cost;
-                que.push((P(d[id.to],id.to)));
-            }
-        }
-    }
+
+#define N (int)1e5+7
+#define clr(a,b) memset(a,b,sizeof a)
+
+struct edge{int v,w,next;}e[5*N];
+int head[N],Cnt=0;
+int n,m,s;
+int dis[N];
+struct node{
+	int u,d;
+	bool operator <(const node& rhs) const {return d>rhs.d;}
+};
+
+void Ins(int u,int v,int w){
+	e[++Cnt]=(edge){v,w,head[u]};
+	head[u]=Cnt;
+}
+
+priority_queue <node> Q;
+
+void Dijkstra(){
+	clr(dis,0x3f);
+	dis[s]=0;
+	Q.push((node){s,0});
+	while(!Q.empty()){
+		node fr=Q.top(); Q.pop();
+		int u=fr.u,d=fr.d,v,w;
+		if(d!=dis[u]) continue;
+		for(int i=head[u];i;i=e[i].next){
+			if(dis[u]+(w=e[i].w)<dis[v=e[i].v])
+				dis[v]=dis[u]+w,Q.push((node){v,dis[v]});
+		}
+	}
+}
+
+int main(){
+	n=input(),m=input(),s=input();
+	for(int i=1;i<=m;i++){
+		int u=input(),v=input(),w=input();
+		Ins(u,v,w);
+	}
+	Dijkstra();
+	for(int i=1;i<=n;i++) printf("%d ",dis[i]);
+	return 0;
 }

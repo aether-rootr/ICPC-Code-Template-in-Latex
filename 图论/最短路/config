@@ -1,1 +1,3 @@
-<Dijkstra> <Dijkstra.cpp>
+<Dijkstra><Dijkstra.cpp><><>
+<spfa><spfa.cpp><><>
+<k短路><k短路.cpp><k短路.tex><>

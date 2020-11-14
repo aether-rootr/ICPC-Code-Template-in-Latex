@@ -1,91 +1,82 @@
 #include <bits/stdc++.h>
+
 using namespace std;
-const int maxn=50005;
-const int maxm=500005;
-const int inf=0x3f3f3f3f;
-struct Node{
-    int to,val,next;
-}q[maxm<<1];
-int head[maxn],cnt=0,dep[maxn],cur[maxn],vis[maxn];
-int sp,ep,maxflow;
-void init(){
-    memset(head,-1,sizeof(head));
-    cnt=2,maxflow=0;
+
+int input(){
+    int x=0,f=0;char ch=getchar();
+    while(ch<'0'||ch>'9') f|=ch=='-',ch=getchar();
+    while(ch>='0'&&ch<='9') x=x*10+ch-'0',ch=getchar();
+    return f? -x:x;
 }
-void addedge(int from,int to,int val){
-    q[cnt].to=to;
-    q[cnt].val=val;
-    q[cnt].next=head[from];
-    head[from]=cnt++;
+
+#define N 20007
+#define M 200007
+#define INF 999999999
+#define clr(a,b) memset(a,b,sizeof(a))
+
+int n,m,s,t;
+int cnt=0;
+int head[N];
+int dis[N],q[N];
+struct edge{
+    int v,w,next;
+}e[M];
+
+void Ins(int u,int v,int w){
+    e[cnt]=(edge){v,w,head[u]};head[u]=cnt++;
+    e[cnt]=(edge){u,0,head[v]};head[v]=cnt++;
 }
-void add_edge(int from,int to,int val){
-    addedge(from,to,val);
-    addedge(to,from,0);
-}
-bool bfs(int n){
-    for(int i=0;i<=n;i++){
-        cur[i]=head[i],dep[i]=0x3f3f3f3f;
-        vis[i]=0;
-    }
-    dep[sp]=0;
-    queue<int>que;
-    que.push(sp);
-    while(!que.empty()){
-        int x=que.front();
-        que.pop();
-        vis[x]=0;
-        for(int i=head[x];i!=-1;i=q[i].next){
-            int to=q[i].to;
-            if(dep[to]>dep[x]+1&&q[i].val){
-                dep[to]=dep[x]+1;
-                if(!vis[to]){
-                    que.push(to);
-                    vis[to]=1;
-                }
+
+int MkLevel(){
+    int x,l=0,r=0;
+    clr(dis,0);
+    dis[s]=1,q[r++]=s;
+    while(l<r){
+        x=q[l++];
+        for(int i=head[x];i!=-1;i=e[i].next){
+            if(e[i].w&&!dis[e[i].v]){
+                dis[e[i].v]=dis[x]+1;
+                if(e[i].v==t) return 1;
+                q[r++]=e[i].v;
             }
         }
     }
-    if(dep[ep]!=inf) return true;
-    else return false;
-}
-int dfs(int x,int flow){
-    int rlow=0;
-    if(x==ep){
-        maxflow+=flow;
-        return flow;
-    }
-    int used=0;
-    for(int i=cur[x];i!=-1;i=q[i].next){
-        cur[x]=i;
-        int to=q[i].to;
-        if(q[i].val&&dep[to]==dep[x]+1){
-            if(rlow=dfs(to,min(flow-used,q[i].val))){
-                used+=rlow;
-                q[i].val-=rlow;
-                q[i^1].val+=rlow;
-                if(used==flow) break;
-            }
-        }
-    }
-    return used;
-}
-int dinic(int n){
-    while(bfs(n)){
-        dfs(sp,inf);
-    }
-    return maxflow;
-}
-int main()
-{
-    int n,m;
-    scanf("%d%d%d%d",&n,&m,&sp,&ep);
-    register int i;
-    int u,v,val;
-    init();
-    for(i=1;i<=m;i++){
-        scanf("%d%d%d",&u,&v,&val);
-        add_edge(u,v,val);
-    }
-    printf("%d",dinic(n));
     return 0;
+}
+
+int extend(int s,int Lim){
+    if(s==t) return Lim;
+    int tmp,cost=0;
+    for(int i=head[s];i!=-1;i=e[i].next){
+        if(e[i].w&&dis[s]==dis[e[i].v]-1){
+            tmp=extend(e[i].v,min(Lim-cost,e[i].w));
+            if(tmp>0){
+                e[i].w-=tmp,e[i^1].w+=tmp,cost+=tmp;
+                if(Lim==cost) break;
+            }else dis[e[i].v]=-1;
+        }
+    }
+    return cost;
+}
+
+int Dinic(){
+    int ans=0;
+    while(MkLevel()) ans+=extend(s,INF);
+    return ans;
+}
+
+void Solve(){
+    n=input(),m=input(),s=input(),t=input();
+    int u,v,w;
+    cnt=0;
+    clr(head,-1);
+    for(int i=1;i<=m;i++){
+        u=input(),v=input(),w=input();
+        Ins(u,v,w);
+    }
+    printf("%d\n",Dinic());
+}
+
+int main(){
+    Solve();
 }

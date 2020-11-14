@@ -1,0 +1,15 @@
+基本的dp方程
+
+选择节点类
+
+$$
+\begin{cases} dp[i][0]=dp[j][1] \\ dp[i][1]=\max/\min(dp[j][0],dp[j][1])\\ \end{cases}
+$$
+
+树形背包类
+
+$$
+\begin{cases} dp[v][k]=dp[u][k]+val\\ dp[u][k]=max(dp[u][k],dp[v][k-1])\\ \end{cases}
+$$
+
+以下是一些树形dp的例题形式。

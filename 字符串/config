@@ -1,1 +1,5 @@
-<Manacher> <Manacher.cpp>
+<字符串hash><字符串hash.cpp><><>
+<KMP><KMP.cpp><><>
+<tire树><tire树.cpp><><>
+<AC自动机><AC自动机.cpp><><>
+<后缀数组><后缀数组.cpp><><>
