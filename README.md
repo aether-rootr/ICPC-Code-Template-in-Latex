@@ -1,4 +1,4 @@
-# ICPC-Code-Template-in-Latex
+# XCPC-Code-Template
 
 私人XCPC代码模板
 
